@@ -1,5 +1,6 @@
 let wrapper = document.querySelector(".wrapper");
 
+fetchapi();
 async function fetchapi() {
   try {
     let response = await fetch(
@@ -26,8 +27,16 @@ async function fetchApiSecond(arr) {
   }
 }
 
-fetchapi();
-
 function showData(arr) {
   console.log(arr);
+
+  let box = document.createElement("div");
+  box.classList.add("boxes");
+
+  let img = document.createElement("img");
+
+  img.src = arr.sprites.front_default;
+
+  box.append(img);
+  wrapper.append(box);
 }

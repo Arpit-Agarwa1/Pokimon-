@@ -4,6 +4,14 @@
   box-sizing: border-box;
 }
 
+.wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
 .boxes {
   width: 25%;
   height: 400px;
