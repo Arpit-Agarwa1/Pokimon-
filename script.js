@@ -36,7 +36,9 @@ function showData(arr) {
   let img = document.createElement("img");
 
   img.src = arr.sprites.front_default;
+  let para = document.createElement("p");
 
-  box.append(img);
+  para.innerText = arr.name;
+  box.append(img, para);
   wrapper.append(box);
 }
