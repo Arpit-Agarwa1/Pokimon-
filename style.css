@@ -2,6 +2,9 @@
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  text-transform: capitalize;
+  font-family: "Poppins", sans-serif;
+  font-size: 1.2rem;
 }
 
 .wrapper {
@@ -9,15 +12,69 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
   flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .boxes {
-  width: 25%;
-  height: 400px;
+  width: 20%;
+  /* height: 400px; */
   border: 2px solid black;
+  border-radius: 30px;
+  padding: 2rem;
+
+  /*  */
 }
 
-.boxes img {
+.flip-card-inner img {
+  width: 200px;
+  height: 300px;
+}
+/*     xxxxxxxxxxxxxxxx     */
+
+.flip-card {
+  background-color: transparent;
+  width: 300px;
+  height: 300px;
+  perspective: 1000px;
+}
+
+.flip-card-inner {
+  position: relative;
   width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  /* box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); */
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.flip-card-front {
+  /* background-color: #bbb; */
+  color: black;
+}
+
+.flip-card-back {
+  background-color: #2980b9;
+  color: white;
+  transform: rotateY(180deg);
 }

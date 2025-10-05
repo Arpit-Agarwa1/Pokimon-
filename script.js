@@ -1,4 +1,5 @@
 let wrapper = document.querySelector(".wrapper");
+let input = document.querySelector(".input");
 
 fetchapi();
 async function fetchapi() {
@@ -13,13 +14,15 @@ async function fetchapi() {
   }
 }
 
+let namesPokemon = [];
+
 async function fetchApiSecond(arr) {
   for (let i = 0; i < arr.length; i++) {
-    console.log(arr[i]);
-
     try {
       let response = await fetch(arr[i].url);
       let result = await response.json();
+      namesPokemon.push(result);
+
       showData(result);
     } catch (error) {
       console.log(error);
@@ -28,17 +31,41 @@ async function fetchApiSecond(arr) {
 }
 
 function showData(arr) {
-  console.log(arr);
-
   let box = document.createElement("div");
-  box.classList.add("boxes");
+
+  let flipInner = document.createElement("div");
+  flipInner.classList.add("flip-card-inner");
+  let flipFront = document.createElement("div");
+  flipFront.classList.add("flip-card-front");
+  let flipBack = document.createElement("div");
+  flipBack.classList.add("flip-card-back");
+  box.classList.add("boxes", "flip-card");
 
   let img = document.createElement("img");
 
-  img.src = arr.sprites.front_default;
+  img.src = arr.sprites.other.dream_world.front_default;
   let para = document.createElement("p");
 
+  box.append(flipInner);
   para.innerText = arr.name;
-  box.append(img, para);
+  flipInner.append(flipFront, flipBack);
+  flipFront.append(img, para);
   wrapper.append(box);
+
+  // xxxxxxx
+}
+
+input.addEventListener("change", serching);
+
+function serching() {
+  let serchItem = input.value;
+  wrapper.innerHTML = "";
+
+  for (let i = 0; i < namesPokemon.length; i++) {
+    let pokemon = namesPokemon[i];
+
+    if (pokemon.name.includes(serchItem)) {
+      showData(pokemon);
+    }
+  }
 }
