@@ -1,14 +1,34 @@
+let fragment = document.createDocumentFragment();
 let wrapper = document.querySelector(".wrapper");
 let input = document.querySelector(".input");
+let baseurl = "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0";
 
-fetchapi();
-async function fetchapi() {
+window.addEventListener("load", async () => {
+  const temp = await fetchapi(baseurl);
+
+  const response = temp.results;
+  const promises = [];
+  for (let i = 0; i < response.length; i++) {
+    // console.log(response);
+    promises.push(fetchapi(response[i].url));
+  }
+  //   console.log(promises);
+
+  const finalData = await Promise.all(promises);
+  console.log(finalData);
+  namesPokemon = finalData;
+  for (let i = 0; i < finalData.length; i++) {
+    showData(finalData[i]);
+  }
+  wrapper.append(fragment);
+});
+
+async function fetchapi(url) {
   try {
-    let response = await fetch(
-      "https://pokeapi.co/api/v2/pokemon?limit=20&offset=0"
-    );
+    let response = await fetch(url);
     let result = await response.json();
-    fetchApiSecond(result.results);
+
+    return result;
   } catch (error) {
     console.log(error);
   }
@@ -16,21 +36,21 @@ async function fetchapi() {
 
 let namesPokemon = [];
 
-async function fetchApiSecond(arr) {
-  for (let i = 0; i < arr.length; i++) {
-    try {
-      let response = await fetch(arr[i].url);
-      let result = await response.json();
-      namesPokemon.push(result);
+// async function fetchApiSecond(arr) {
+//   for (let i = 0; i < arr.length; i++) {
+//     try {
+//       let response = await fetch(arr[i].url);
 
-      showData(result);
-    } catch (error) {
-      console.log(error);
-    }
-  }
-}
+//       let result = await response.json();
 
-function showData(arr) {
+//       fragment.appendChild(showData(result));
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   }
+// }
+
+function showData(obj) {
   let box = document.createElement("div");
 
   let flipInner = document.createElement("div");
@@ -39,18 +59,21 @@ function showData(arr) {
   flipFront.classList.add("flip-card-front");
   let flipBack = document.createElement("div");
   flipBack.classList.add("flip-card-back");
+
+  flipBack.innerText = obj.id;
   box.classList.add("boxes", "flip-card");
 
   let img = document.createElement("img");
 
-  img.src = arr.sprites.other.dream_world.front_default;
+  img.src = obj.sprites.other.dream_world.front_default;
   let para = document.createElement("p");
 
   box.append(flipInner);
-  para.innerText = arr.name;
+  para.innerText = obj.name;
   flipInner.append(flipFront, flipBack);
   flipFront.append(img, para);
-  wrapper.append(box);
+
+  fragment.append(box);
 
   // xxxxxxx
 }
